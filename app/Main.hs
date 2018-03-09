@@ -1,8 +1,7 @@
 module Main where
 
-import System.Process
 import Lib
-import Control.Concurrent
+import Control.Concurrent (threadDelay)
 
 
 main :: IO ()
