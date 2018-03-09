@@ -7,7 +7,7 @@ import Control.Concurrent
 
 main :: IO ()
 main = do
-  pr <- shellReturnHandle $ "sh redo.do"
+  pr <- shellReturnHandle $ "./TestProcess"
   threadDelay 1000000
-  kill <- killProcess pr
+  kill <- stopProcess pr
   return ()

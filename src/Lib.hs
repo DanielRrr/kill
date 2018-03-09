@@ -35,7 +35,9 @@ killProcess ph = terminateProcess ph
 #else
 
 stopProcess :: ProcessHandle -> IO ()
-stopProcess ph = terminateProcess ph
+stopProcess ph = do
+  putStrLn "Stop me, oh, stop me"
+  terminateProcess ph
 
 killProcess :: ProcessHandle -> IO ()
 killProcess ph = do
