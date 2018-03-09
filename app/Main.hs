@@ -9,5 +9,5 @@ main :: IO ()
 main = do
   pr <- shellReturnHandle $ "./TestProcess"
   threadDelay 1000000
-  kill <- stopProcess pr
+  kill <- killProcess pr
   return ()

@@ -24,12 +24,15 @@ stopProcess ph = do
   pid <- getPid ph
   stop <- case pid of
     Nothing -> print "wtf"
-    Just pD -> generateConsoleCtrlEvent cTRL_C_EVENT pD
-  putStrLn "stop"
+    Just pD -> do
+      putStrLn "Stop me, oh, stop me"
+      generateConsoleCtrlEvent cTRL_C_EVENT pD
   return ()
 
 killProcess :: ProcessHandle -> IO ()
-killProcess ph = terminateProcess ph
+killProcess ph = do
+  putStrLn "Murder most foul, as in the best it is, But this most foul, strange, and unnatural."
+  terminateProcess ph
 
 
 #else
@@ -45,9 +48,8 @@ killProcess ph = do
     case p_ of
       ClosedHandle _ -> return ()
       OpenHandle h -> do
-        signalProcess sigKILL h
         putStrLn "Murder most foul, as in the best it is, But this most foul, strange, and unnatural."
-        return ()
+        signalProcess sigKILL h
 
 #endif
 
