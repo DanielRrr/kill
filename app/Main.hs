@@ -1,6 +1,6 @@
 module Main where
 
-import ProcessKiller (stopProcess)
+import Lib (stopProcess)
 import Control.Concurrent (threadDelay)
 import System.Process (runCommand)
 
