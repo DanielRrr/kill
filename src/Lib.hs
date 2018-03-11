@@ -23,21 +23,7 @@ import System.Process.Internals (ProcessHandle__(..),
 #ifdef mingw32_HOST_OS
 stopProcess :: P.ProcessHandle -> IO ()
 stopProcess ph = do
-  pid <- getPid ph
-  case pid of
-    Nothing -> putStrLn "wtf"
-    Just pD -> do
-      putStrLn "Stop me, oh, stop me"
-      generateConsoleCtrlEvent cTRL_C_EVENT pD
-  return ()
-  where
-    getPid (Pi.ProcessHandle mh _) = do
-      p_ <- readMVar mh
-      case p_ of
-        Pi.OpenHandle h -> do
-          pid <- getProcessId h
-          return $ Just pid
-        _ -> return Nothing
+  P.interruptProcessGroupOf ph
 
 killProcess :: P.ProcessHandle -> IO ()
 killProcess ph = do
