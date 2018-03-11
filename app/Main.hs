@@ -1,6 +1,6 @@
 module Main where
 
-import Lib (killProcess)
+import Lib (stopProcess)
 import Control.Concurrent (threadDelay)
 import System.Process (runCommand)
 
@@ -8,5 +8,4 @@ import System.Process (runCommand)
 main :: IO ()
 main = do
   pr <- runCommand $ "./bracket-exe.exe"
-  threadDelay 1000000
-  killProcess pr
+  stopProcess pr

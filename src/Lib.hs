@@ -9,7 +9,7 @@ import Control.Concurrent.MVar (readMVar)
 
 #ifdef mingw32_HOST_OS
 import System.Win32.Console (generateConsoleCtrlEvent, cTRL_C_EVENT)
-import System.Win32.Process (getProcessId)
+import System.Win32.Process (getProcessId, terminateProcessById)
 import qualified System.Process as P
 import qualified System.Process.Internals as Pi
 #else
@@ -23,18 +23,21 @@ import System.Process.Internals (ProcessHandle__(..),
 #ifdef mingw32_HOST_OS
 stopProcess :: P.ProcessHandle -> IO ()
 stopProcess ph = do
-  P.interruptProcessGroupOf ph
+  pid <- P.getPid ph
+  stop <- case pid of
+    Nothing -> print "wtf"
+    Just pD -> generateConsoleCtrlEvent cTRL_C_EVENT pD
 
 killProcess :: P.ProcessHandle -> IO ()
 killProcess ph = do
-  putStrLn "Murder most foul, as in the best it is, but this most foul, strange, and unnatural"
-  P.terminateProcess ph
+  pid <- P.getPid ph
+  case pid of
+    Nothing -> putStrLn "wtf"
+    Just pD -> terminateProcessById pD
 
 #else
 stopProcess :: ProcessHandle -> IO ()
-stopProcess ph = do
-  putStrLn "Stop me, oh, stop me"
-  terminateProcess ph
+stopProcess = terminateProcess
 
 killProcess :: ProcessHandle -> IO ()
 killProcess ph = do
@@ -42,6 +45,5 @@ killProcess ph = do
     case p_ of
       ClosedHandle _ -> return ()
       OpenHandle h -> do
-        putStrLn "Murder most foul, as in the best it is, But this most foul, strange, and unnatural."
         signalProcess sigKILL h
 #endif
